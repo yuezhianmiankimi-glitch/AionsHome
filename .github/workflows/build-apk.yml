@@ -29,7 +29,7 @@ jobs:
       - name: Build Release APK
         run: |
           cd ./AionApp
-          gradle assembleRelease
+          gradle assembleRelease --info --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
