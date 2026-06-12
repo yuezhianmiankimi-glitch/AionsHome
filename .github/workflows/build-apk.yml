@@ -1,4 +1,3 @@
-
 name: Build Aion APK
 
 on:
@@ -22,21 +21,9 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Find Android project
-        id: find
-        run: |
-          if [ -f "./gradlew" ]; then
-            echo "dir=." >> $GITHUB_OUTPUT
-          elif [ -f "./AionApp/gradlew" ]; then
-            echo "dir=./AionApp" >> $GITHUB_OUTPUT
-          else
-            GRADLE_PATH=$(find . -name "gradlew" -not -path "*/.*" | head -1)
-            echo "dir=$(dirname "$GRADLE_PATH")" >> $GITHUB_OUTPUT
-          fi
-
       - name: Build Release APK
         run: |
-          cd ${{ steps.find.outputs.dir }}
+          cd ./AionApp
           chmod +x gradlew
           ./gradlew assembleRelease
 
@@ -44,5 +31,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Aion-APK
-          path: '**/build/outputs/apk/release/*.apk'
+          path: ./AionApp/**/build/outputs/apk/release/*.apk
           if-no-files-found: error
